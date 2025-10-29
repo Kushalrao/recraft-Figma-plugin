@@ -2,6 +2,9 @@
   "name": "recraft-proxy",
   "version": "1.0.0",
   "description": "Proxy server for Recraft API to bypass CORS",
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "sharp": "^0.33.0"
+  }
 }
 

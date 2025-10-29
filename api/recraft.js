@@ -1,6 +1,8 @@
 // Vercel Serverless Function for Recraft API Proxy
 // This file must be in /api/recraft.js for Vercel to recognize it
 
+import sharp from 'sharp';
+
 export default async function handler(req, res) {
   // Set CORS headers for Figma plugin (allow all origins)
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -54,6 +56,32 @@ export default async function handler(req, res) {
     }
 
     const data = await response.json();
+    
+    // Convert WEBP images to PNG base64 nutrients for Figma compatibility
+    if (data.data && Array.isArray(data.data)) {
+      for (let item of data.data) {
+        if (item.url && item.url.includes('img.recraft.ai')) {
+          try {
+            // Fetch the image
+            const imageResponse = await fetch(item.url);
+            const imageBuffer = await imageResponse.arrayBuffer();
+            
+            // Convert WEBP to PNG using sharp
+            const pngBuffer = await sharp(Buffer.from(imageBuffer))
+              .png()
+              .toBuffer();
+            
+            // Convert to base64 and add to response
+            const base64Png = pngBuffer.toString('base64');
+            item.b64_json = base64Png; // Use same format as OpenAI API
+            item.url_png = `data:image/png;base64,${base64Png}`;
+          } catch (convError) {
+            console.error('Image conversion error:', convError);
+            // Continue with original URL if conversion fails
+          }
+        }
+      }
+    }
     
     // Return the response
     return res.status(200).json(data);
