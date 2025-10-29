@@ -57,7 +57,7 @@ export default async function handler(req, res) {
 
     const data = await response.json();
     
-    // Convert WEBP images to PNG base64 nutrients for Figma compatibility
+    // Convert WEBP images to PNG base64 for Figma compatibility
     if (data.data && Array.isArray(data.data)) {
       for (let item of data.data) {
         if (item.url && item.url.includes('img.recraft.ai')) {
@@ -93,4 +93,3 @@ export default async function handler(req, res) {
     });
   }
 }
-
