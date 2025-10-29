@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "api/recraft.js": {
+      "maxDuration": 60
+    }
+  }
+}
+
