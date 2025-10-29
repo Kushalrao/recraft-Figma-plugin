@@ -39,7 +39,8 @@ export default async function handler(req, res) {
         substyle: req.body.substyle,
         negative_prompt: req.body.negative_prompt,
         n: req.body.n || 1,
-        response_format: req.body.response_format || 'url'
+        response_format: req.body.response_format || 'url',
+        format: 'png' // Request PNG format for Figma compatibility
       })
     });
 
